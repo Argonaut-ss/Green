@@ -43,7 +43,7 @@ class _SignupState extends State<Signup> {
           child: Stack(
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Column(
                   children: [
                     // Baris atas untuk Sign In pojok kanan
