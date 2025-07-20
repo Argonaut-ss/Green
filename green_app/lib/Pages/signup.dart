@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:green_app/signin.dart';
+import 'package:green_app/Custom/custom_decoration_field.dart';
+import 'package:green_app/Pages/signin.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -10,29 +11,10 @@ class Signup extends StatefulWidget {
 
 class _SignupState extends State<Signup> {
   bool _obscurePassword = true;
-
-  InputDecoration customInputDecoration({required String hint, required String iconPath, Widget? suffixIcon}) {
-    return InputDecoration(
-      prefixIcon: Image.asset(iconPath, height: 20, width: 20),
-      prefixIconConstraints: const BoxConstraints(minWidth: 44, minHeight: 20),
-      hintText: hint,
-      hintStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(width: 1, color: Color(0xFFBDBDBD)),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(width: 1, color: Color(0xFFBDBDBD)),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(width: 1.2, color: Color(0xFF2ECC40)),
-      ),
-      contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
-      suffixIcon: suffixIcon,
-    );
-  }
+  TextEditingController _nameController = new TextEditingController();
+  TextEditingController _emailController = new TextEditingController();
+  TextEditingController _passwordController = new TextEditingController();
+  TextEditingController _phoneController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -98,6 +80,7 @@ class _SignupState extends State<Signup> {
                     const SizedBox(height: 36),
                     // Form input
                     TextField(
+                      controller: _nameController,
                       decoration: customInputDecoration(
                         hint: 'Nama Lengkap',
                         iconPath: 'assets/user_profile_icon.png',
@@ -105,6 +88,7 @@ class _SignupState extends State<Signup> {
                     ),
                     const SizedBox(height: 12),
                     TextField(
+                      controller: _emailController,
                       decoration: customInputDecoration(
                         hint: 'Email',
                         iconPath: 'assets/email_icon.png',
@@ -112,6 +96,7 @@ class _SignupState extends State<Signup> {
                     ),
                     const SizedBox(height: 12),
                     TextField(
+                      controller: _passwordController,
                       obscureText: _obscurePassword,
                       decoration: customInputDecoration(
                         hint: 'Kata Sandi',
@@ -128,6 +113,7 @@ class _SignupState extends State<Signup> {
                     ),
                     const SizedBox(height: 12),
                     TextField(
+                      controller: _phoneController,
                       decoration: customInputDecoration(
                         hint: 'No Telp',
                         iconPath: 'assets/phone_icon.png',
