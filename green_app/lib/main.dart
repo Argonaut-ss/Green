@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Green App',
-      home: Signin(),
+      home: Signup(),
     );
   }
 }
