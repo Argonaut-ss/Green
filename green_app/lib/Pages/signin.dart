@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:green_app/signup.dart';
+import 'package:green_app/Custom/custom_decoration_field.dart';
+import 'package:green_app/Pages/dashboard.dart';
+import 'package:green_app/Pages/signup.dart';
+import 'package:green_app/controller.dart';
 
 class Signin extends StatefulWidget {
   const Signin({super.key});
@@ -11,27 +14,27 @@ class Signin extends StatefulWidget {
 class _SigninState extends State<Signin> {
   bool _obscurePassword = true;
 
-  InputDecoration customInputDecoration({required String hint, required String iconPath, Widget? suffixIcon}) {
-    return InputDecoration(
-      prefixIcon: Image.asset(iconPath, height: 20, width: 20),
-      prefixIconConstraints: const BoxConstraints(minWidth: 44, minHeight: 20),
-      hintText: hint,
-      hintStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(width: 1, color: Color(0xFFBDBDBD)),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(width: 1, color: Color(0xFFBDBDBD)),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(width: 1.2, color: Color(0xFF2ECC40)),
-      ),
-      contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
-      suffixIcon: suffixIcon,
+  TextEditingController _emailController = new TextEditingController();
+  TextEditingController _passwordController = new TextEditingController();
+  final _signInController = SignInController();
+
+  String? _errorMessage;
+
+  void _signIn() async {
+    final result = await _signInController.signInWithEmail(
+      _emailController.text,
+      _passwordController.text,
     );
+    if (result.userCredential != null) {
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Dashboard()));
+      setState(() {
+        _errorMessage = null;
+      });
+    } else {
+      setState(() {
+        _errorMessage = result.errorMessage;
+      });
+    }
   }
 
   @override
@@ -95,6 +98,7 @@ class _SigninState extends State<Signin> {
                   ),
                   const SizedBox(height: 36),
                   TextField(
+                    controller: _emailController,
                     decoration: customInputDecoration(
                       hint: 'Email',
                       iconPath: 'assets/email_icon.png',
@@ -102,6 +106,7 @@ class _SigninState extends State<Signin> {
                   ),
                   const SizedBox(height: 12),
                   TextField(
+                    controller: _passwordController,
                     obscureText: _obscurePassword,
                     decoration: customInputDecoration(
                       hint: 'Kata Sandi',
@@ -197,9 +202,13 @@ class _SigninState extends State<Signin> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          setState(() {
+                            _signIn();
+                          });
+                        },
                         child: const Text(
-                          'Sign Up',
+                          'Sign In',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,
