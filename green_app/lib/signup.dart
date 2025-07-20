@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:green_app/signin.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -47,12 +48,17 @@ class _SignupState extends State<Signup> {
                 child: Column(
                   children: [
                     // Baris atas untuk Sign In pojok kanan
-                    const SizedBox(height: 36),
+                    const SizedBox(height: 16),
                     Row(
                       children: [
                         const Spacer(),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => Signin()),
+                            );
+                          },
                           child: const Padding(
                             padding: EdgeInsets.only(top: 8.0, right: 2.0),
                             child: Text(
@@ -74,8 +80,8 @@ class _SignupState extends State<Signup> {
                       children: [
                         Image.asset(
                           'assets/washing_machine_logo.png',
-                          height: 140,
-                          width: 140,
+                          height: 133,
+                          width: 120,
                           fit: BoxFit.contain,
                         ),
                         const SizedBox(height: 12),
@@ -130,7 +136,7 @@ class _SignupState extends State<Signup> {
                     // Spacer agar tombol selalu di bawah
                     const Spacer(),
                     Padding(
-                      padding: const EdgeInsets.only(bottom: 18.0),
+                      padding: const EdgeInsets.only(bottom: 16.0),
                       child: SizedBox(
                         width: double.infinity,
                         height: 48,
