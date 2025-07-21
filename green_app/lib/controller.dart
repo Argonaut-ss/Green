@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class SignInResult {
@@ -42,5 +43,64 @@ class SignInController {
 
   Future<void> signOut() async {
     await _auth.signOut();
+  }
+}
+
+class SignupController {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Future<String?> signUpWithEmail({
+    required String name,
+    required String email,
+    required String password,
+    required String phone,
+  }) async {
+    try {
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      User? user = userCredential.user;
+      if (user != null) {
+        await user.updateDisplayName(name);
+        await _firestore.collection('users').doc(user.uid).set({
+          'name': name,
+          'email': email,
+          'phone': phone,
+          'password': password,
+          'createdAt': FieldValue.serverTimestamp(),
+        });
+        print('User data added to Firestore');
+        return null; // Success
+      } else {
+        return 'User creation failed';
+      }
+    } on FirebaseAuthException catch (e) {
+      return e.message;
+    } catch (e) {
+      print('Unexpected signup error: $e');
+      return 'An unexpected error occurred';
+    }
+  }
+}
+
+Future<String?> deleteAccountAndData() async {
+  try {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return 'No user signed in';
+
+    // Delete Firestore user document
+    await FirebaseFirestore.instance.collection('users').doc(user.uid).delete();
+
+    // Delete Auth user
+    await user.delete();
+
+    return null; // Success
+  } on FirebaseAuthException catch (e) {
+    return e.message;
+  } catch (e) {
+    print('Delete account error: $e');
+    return 'An unexpected error occurred';
   }
 }
