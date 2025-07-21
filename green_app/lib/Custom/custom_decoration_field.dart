@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
-InputDecoration customInputDecoration({required String hint, required String iconPath, Widget? suffixIcon}) {
+InputDecoration customInputDecoration({required String hint, required String iconPath, Widget? suffixIcon, Color? backgroundColor, Color? iconColor}) {
     return InputDecoration(
+      iconColor: iconColor,
+      fillColor: backgroundColor,
       prefixIcon: Image.asset(iconPath, height: 20, width: 20),
       prefixIconConstraints: const BoxConstraints(minWidth: 44, minHeight: 20),
       hintText: hint,

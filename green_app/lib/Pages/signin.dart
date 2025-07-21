@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:green_app/Custom/bottom_navbar.dart';
 import 'package:green_app/Custom/custom_decoration_field.dart';
 import 'package:green_app/Pages/dashboard.dart';
 import 'package:green_app/Pages/signup.dart';
@@ -30,7 +31,7 @@ class _SigninState extends State<Signin> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Sign in successful!')),
       );
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Dashboard()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const CustomBottomNavBarPage()));
       setState(() {
         _errorMessage = null;
       });
