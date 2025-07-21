@@ -26,6 +26,9 @@ class _SigninState extends State<Signin> {
       _passwordController.text,
     );
     if (result.userCredential != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Sign in successful!')),
+      );
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Dashboard()));
       setState(() {
         _errorMessage = null;
