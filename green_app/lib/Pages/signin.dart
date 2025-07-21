@@ -3,6 +3,7 @@ import 'package:green_app/Custom/custom_decoration_field.dart';
 import 'package:green_app/Pages/dashboard.dart';
 import 'package:green_app/Pages/signup.dart';
 import 'package:green_app/controller.dart';
+import 'package:green_app/auth/google_auth.dart';
 
 class Signin extends StatefulWidget {
   const Signin({super.key});
@@ -171,8 +172,26 @@ class _SigninState extends State<Signin> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {
-                          // handle Apple sign in
+                        onTap: () async {
+                          final firebaseService = FirebaseService();
+                          bool isAutoLogged = await firebaseService.autoSignInWithGoogle();
+                          if (isAutoLogged) {
+                            // User otomatis login, arahkan ke halaman utama
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => Dashboard()),
+                            );
+                          } else {
+                            // User belum login, tampilkan halaman login
+                            bool isLogged = await firebaseService.signinWithGoogle();
+
+                            if(isLogged){
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Dashboard()),
+                              );
+                            }
+                          }
+                          
+                          
                         },
                         child: Image.asset(
                           'assets/google_logo.png',
