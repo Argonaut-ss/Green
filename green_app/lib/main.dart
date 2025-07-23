@@ -2,6 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:green_app/Custom/bottom_navbar.dart';
+import 'package:green_app/Pages/add_pesanan.dart';
+import 'package:green_app/Pages/profile.dart';
+import 'package:green_app/Pages/settings.dart';
 import 'package:green_app/Pages/signin.dart';
 import 'package:green_app/firebase_options.dart';
 
@@ -22,7 +25,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Green App',
-      home: user == null ? Signin() : CustomBottomNavBarPage(), // Show home if signed in
+      home: user == null ? Signin() : CustomBottomNavBarPage(),
+      routes: {
+        '/settings': (context) => SettingsPage(),
+        '/profile': (context) => ProfilePage(),
+        '/addPesanan': (context) => const AddPesanan(),
+      },
     );
   }
 }
