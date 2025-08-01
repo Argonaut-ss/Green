@@ -180,14 +180,14 @@ class _SigninState extends State<Signin> {
                             // User otomatis login, arahkan ke halaman utama
                             Navigator.pushReplacement(
                               context,
-                              MaterialPageRoute(builder: (context) => Dashboard()),
+                              MaterialPageRoute(builder: (context) => CustomBottomNavBarPage()),
                             );
                           } else {
                             // User belum login, tampilkan halaman login
                             bool isLogged = await firebaseService.signinWithGoogle();
 
                             if(isLogged){
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Dashboard()),
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CustomBottomNavBarPage()),
                               );
                             }
                           }
