@@ -90,7 +90,7 @@ class _PesananListState extends State<PesananList> {
               children: [
                 Text("Pesanan", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500)),
                 const SizedBox(height: 27),
-                buildPesananList(_getPesananStream()),
+                buildPesananList(_getPesananStream('Menunggu Konfirmasi')),
                 const SizedBox(height: 27),
                 Text("Sedang dikerjakan", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500)),
                 const SizedBox(height: 27),
