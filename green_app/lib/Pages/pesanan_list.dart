@@ -13,7 +13,6 @@ class PesananList extends StatefulWidget {
 }
 
 class _PesananListState extends State<PesananList> {
-
   Stream<QuerySnapshot> _getPesananStream([String? category]) {
     var collection = FirebaseFirestore.instance.collection('pesanan');
     if (category != null && category.isNotEmpty) {
@@ -64,28 +63,26 @@ class _PesananListState extends State<PesananList> {
       },
     );
   }
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: const Text('green', style: TextStyle(color: Colors.green)),
-        centerTitle: true,
         backgroundColor: Colors.white,
-        elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black),
-      ),
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          title: const Text('green', style: TextStyle(color: Colors.green)),
+          centerTitle: true,
+          backgroundColor: Colors.white,
+          elevation: 0,
+          iconTheme: const IconThemeData(color: Colors.black),
+        ),
 
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
