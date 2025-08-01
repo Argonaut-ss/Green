@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:green_app/Custom/bottom_navbar.dart';
 import 'package:green_app/Pages/pick_location.dart';
 import 'package:green_app/Theme/colors.dart';
 import 'package:latlong2/latlong.dart';
@@ -211,8 +212,14 @@ class _AddPesananState extends State<AddPesanan> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                onPressed: () {
-                  // Handle next
+                onPressed: () async {
+                  await AddPesanan();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CustomBottomNavBarPage()
+                    ),
+                  );
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
