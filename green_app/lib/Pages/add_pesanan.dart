@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:green_app/Custom/bottom_navbar.dart';
 import 'package:green_app/Pages/pick_location.dart';
 import 'package:green_app/Theme/colors.dart';
+import 'package:green_app/controller.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geocoding/geocoding.dart';
@@ -21,6 +22,13 @@ class _AddPesananState extends State<AddPesanan> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _noteController = TextEditingController();
+  final AddPesananAPI _pesananController = AddPesananAPI ();
+
+  String namaPesanan = '';
+  String alamat = '';
+  String jasa = '';
+  String deliv = '';
+  String catatan = '';
 
   String? _selectedService;
   String? _selectedPickup;
@@ -93,7 +101,8 @@ class _AddPesananState extends State<AddPesanan> {
                         color: Colors.black45,
                         width: 1,
                       ),
-                    ),                  ),
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 16),
                 TextField(
@@ -107,7 +116,8 @@ class _AddPesananState extends State<AddPesanan> {
                         color: Colors.black45,
                         width: 1,
                       ),
-                    ),                  ),
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 12),
                 DropdownButtonFormField<String>(
@@ -121,7 +131,8 @@ class _AddPesananState extends State<AddPesanan> {
                         color: Colors.black45,
                         width: 1,
                       ),
-                    ),                  ),
+                    ),                  
+                  ),
                   hint: const Text('Pilih jasa'),
                   items: ['Cuci', 'Setrika', 'Cuci & Setrika']
                       .map((e) => DropdownMenuItem(
@@ -163,6 +174,7 @@ class _AddPesananState extends State<AddPesanan> {
                 ),
                 const SizedBox(height: 16),
                 TextField(
+                  controller: _noteController,
                   decoration: InputDecoration(
                     hintText: 'Beri catatan',
                     hintStyle: const TextStyle(color: Colors.black54),
@@ -214,15 +226,37 @@ class _AddPesananState extends State<AddPesanan> {
                   ),
                 ),
                 onPressed: () async {
-                  await AddPesanan(
-
-                  );
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CustomBottomNavBarPage()
-                    ),
-                  );
+                  try {
+                    final result = await _pesananController.addPesananAPI(
+                      namaPesanan: _nameController.text,
+                      alamat: _addressController.text,
+                      jasa: _selectedService ?? '',
+                      deliv: _selectedPickup ?? '',
+                      catatan: _noteController.text,
+                    );
+                    
+                    if (result == null) {
+                      // Success
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Pesanan berhasil ditambahkan!')),
+                      );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CustomBottomNavBarPage()
+                        ),
+                      );
+                    } else {
+                      // Error
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Error: $result')),
+                      );
+                    }
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Error: $e')),
+                    );
+                  }
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -239,4 +273,4 @@ class _AddPesananState extends State<AddPesanan> {
       ),
     );
   }
-  }
+}
