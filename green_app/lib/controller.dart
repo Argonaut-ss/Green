@@ -105,11 +105,11 @@ Future<String?> deleteAccountAndData() async {
   }
 }
 
-class AddPesanan {
+class AddPesananAPI {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<String?> addPesanan({
+  Future<String?> addPesananAPI({
     required String namaPesanan,
     required String alamat,
     required String jasa,
