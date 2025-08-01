@@ -72,7 +72,7 @@ class _AddPesananState extends State<AddPesanan> {
             Navigator.pop(context);
           },
         ),
-        title: const Text('green', style: TextStyle(color: Colors.green)),
+        title: const Text('Green', style: TextStyle(color: Colors.green)),
         centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 0,
@@ -94,7 +94,7 @@ class _AddPesananState extends State<AddPesanan> {
                   controller: _nameController,
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.drive_file_rename_outline),
-                    hintText: 'beri nama pesanan',
+                    hintText: 'Beri nama pesanan',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: const BorderSide(
@@ -109,7 +109,7 @@ class _AddPesananState extends State<AddPesanan> {
                   controller: _addressController,
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.location_pin),
-                    hintText: 'isi alamat',
+                    hintText: 'Isi alamat',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: const BorderSide(
@@ -131,9 +131,9 @@ class _AddPesananState extends State<AddPesanan> {
                         color: Colors.black45,
                         width: 1,
                       ),
-                    ),
+                    ),                  
                   ),
-                  hint: const Text('pilih jasa'),
+                  hint: const Text('Pilih jasa'),
                   items: ['Cuci', 'Setrika', 'Cuci & Setrika']
                       .map((e) => DropdownMenuItem(
                     value: e,
@@ -159,8 +159,8 @@ class _AddPesananState extends State<AddPesanan> {
                       ),
                     ),
                   ),
-                  hint: const Text('mau diambil atau dijemput'),
-                  items: ['Diambil', 'Dijemput']
+                  hint: const Text('Taruh di toko atau dijemput ke rumah'),
+                  items: ['Taruh di toko', 'Dijemput']
                       .map((e) => DropdownMenuItem(
                     value: e,
                     child: Text(e),
@@ -176,7 +176,7 @@ class _AddPesananState extends State<AddPesanan> {
                 TextField(
                   controller: _noteController,
                   decoration: InputDecoration(
-                    hintText: 'catatan tambahan',
+                    hintText: 'Beri catatan',
                     hintStyle: const TextStyle(color: Colors.black54),
                     filled: true,
                     fillColor: const Color(0xFFFEF8FF), // latar mirip yg di gambar
@@ -261,7 +261,7 @@ class _AddPesananState extends State<AddPesanan> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('next', style: TextStyle(color: AppColors.primarywhite)),
+                    Text('Next', style: TextStyle(color: AppColors.primarywhite)),
                     Spacer(),
                     Icon(Icons.arrow_forward, color: AppColors.primarywhite),
                   ],
