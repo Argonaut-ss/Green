@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:green_app/Custom/custom_decoration_field.dart';
 import 'package:green_app/Custom/pesanan_card.dart';
 import 'package:green_app/Pages/pesanan_list.dart';
 import 'package:green_app/Theme/colors.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:green_app/controller.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -13,6 +15,9 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+
+  final AddPesananAPI addPesananAPI = AddPesananAPI();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -195,7 +200,7 @@ class _DashboardState extends State<Dashboard> {
                   ],
                 ),
                 SizedBox(height: 26,),
-                PesananCard(namaPesanan: 'Pesanan Samy', status: 'Sudah selesai', statusColor: AppColors.secondaryColor,)
+                PesananCard(namaPesanan: 'Nama Pesanan', status: 'Bentar')
               ],
             ),
           ),

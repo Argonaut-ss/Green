@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:uuid/uuid.dart';
 
 class SignInResult {
   final UserCredential? userCredential;
@@ -108,6 +109,7 @@ Future<String?> deleteAccountAndData() async {
 class AddPesananAPI {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final Uuid _uuid = Uuid();
 
   Future<String?> addPesananAPI({
     required String namaPesanan,
@@ -119,12 +121,17 @@ class AddPesananAPI {
     try {
       User? user = _auth.currentUser;
       if (user != null) {
-        await _firestore.collection('pesanan').doc(user.uid).set({
+        final String token = _uuid.v4();
+        final String status = 'Menunggu Konfirmasi';
+        await _firestore.collection('pesanan').add({
+          'userId': user.uid,
           'namaPesanan': namaPesanan,
           'alamat': alamat,
           'jasa': jasa,
           'deliv': deliv,
           'catatan': catatan,
+          'token': token,
+          'status': status,
         });
         print('Pesanan data added to Firestore');
         return null; // Success
