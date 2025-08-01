@@ -104,3 +104,38 @@ Future<String?> deleteAccountAndData() async {
     return 'An unexpected error occurred';
   }
 }
+
+class AddPesanan {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Future<String?> addPesanan({
+    required String namaPesanan,
+    required String alamat,
+    required String jasa,
+    required String deliv,
+    required String catatan,
+  }) async {
+    try {
+      User? user = _auth.currentUser;
+      if (user != null) {
+        await _firestore.collection('pesanan').doc(user.uid).set({
+          'namaPesanan': namaPesanan,
+          'alamat': alamat,
+          'jasa': jasa,
+          'deliv': deliv,
+          'catatan': catatan,
+        });
+        print('Pesanan data added to Firestore');
+        return null; // Success
+      } else {
+        return 'Pesananan failed';
+      }
+    } on FirebaseAuthException catch (e) {
+      return e.message;
+    } catch (e) {
+      print('Unexpected error: $e');
+      return 'An unexpected error occurred';
+    }
+  }
+}
