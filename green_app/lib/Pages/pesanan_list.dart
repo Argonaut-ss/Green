@@ -13,7 +13,6 @@ class PesananList extends StatefulWidget {
 }
 
 class _PesananListState extends State<PesananList> {
-
   Stream<QuerySnapshot> _getPesananStream([String? category]) {
     var collection = FirebaseFirestore.instance.collection('pesanan');
     if (category != null && category.isNotEmpty) {
@@ -64,8 +63,6 @@ class _PesananListState extends State<PesananList> {
       },
     );
   }
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,6 +83,7 @@ class _PesananListState extends State<PesananList> {
 
       body: Padding(
         padding: const EdgeInsets.all(16.0),
+      ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
