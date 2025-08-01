@@ -16,7 +16,7 @@ class _PesananListState extends State<PesananList> {
   Stream<QuerySnapshot> _getPesananStream([String? category]) {
     var collection = FirebaseFirestore.instance.collection('pesanan');
     if (category != null && category.isNotEmpty) {
-      return collection.where('category', isEqualTo: category).snapshots();
+      return collection.where('status', isEqualTo: category).snapshots();
     }
     return collection.snapshots();
   }
@@ -36,8 +36,9 @@ class _PesananListState extends State<PesananList> {
         }
         final docs = snapshot.data!.docs;
         return ListView.builder(
-          itemCount: docs.length,
-          itemBuilder: (context, index) {
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: docs.length,          itemBuilder: (context, index) {
             final data = docs[index].data() as Map<String, dynamic>;
             return Padding(
               padding: const EdgeInsets.only(bottom: 16.0, left: 16),
@@ -83,40 +84,21 @@ class _PesananListState extends State<PesananList> {
 
         body: Padding(
           padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 1, // Takes more space
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Pesanan", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500)),
-                  const SizedBox(height: 27),
-                  Expanded(child: buildPesananList(_getPesananStream())),
-                ],
-              ),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Pesanan", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500)),
+                const SizedBox(height: 27),
+                buildPesananList(_getPesananStream()),
+                const SizedBox(height: 27),
+                Text("Sedang dikerjakan", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500)),
+                const SizedBox(height: 27),
+                buildPesananList(_getPesananStream('Sedang Dikerjakan')),
+              ],
             ),
-            Expanded(
-              flex: 1, // Takes less space
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Sedang dikerjakan", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500)),
-                  const SizedBox(height: 27),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: 2,
-                    itemBuilder: (context, index) {
-                      return PesananCard(namaPesanan: 'Pesanan 1', status: 'Dikerjakan');
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ))
+          ),
+        )
     );
   }
 }
