@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:green_app/Custom/custom_decoration_field.dart';
 import 'package:green_app/Custom/pesanan_card.dart';
 import 'package:green_app/Pages/pesanan_list.dart';
 import 'package:green_app/Theme/colors.dart';
@@ -16,7 +16,38 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
 
-  final AddPesananAPI addPesananAPI = AddPesananAPI();
+  Widget buildPesananList() {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      return Text('Not signed in');
+    }
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection('pesanan')
+          .where('userId', isEqualTo: user.uid)
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        }
+        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+          return Text('No pesanan found');
+        }
+        return ListView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: snapshot.data!.docs.length,
+          itemBuilder: (context, index) {
+            final data = snapshot.data!.docs[index];
+            return PesananCard(
+              namaPesanan: data['namaPesanan'] ?? '',
+              status: data['status'] ?? '',
+            );
+          },
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -200,7 +231,10 @@ class _DashboardState extends State<Dashboard> {
                   ],
                 ),
                 SizedBox(height: 26,),
-                PesananCard(namaPesanan: 'Nama Pesanan', status: 'Bentar')
+                SizedBox(
+                  height: 200,
+                  child: buildPesananList(),
+                )
               ],
             ),
           ),
