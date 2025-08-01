@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:green_app/Custom/custom_decoration_field.dart';
 import 'package:green_app/Custom/pesanan_card.dart';
+import 'package:green_app/Pages/pesanan_list.dart';
 import 'package:green_app/Theme/colors.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -186,7 +187,9 @@ class _DashboardState extends State<Dashboard> {
                     Text('Pesanan', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),),
                     Spacer(),
                     TextButton(
-                      onPressed: (){},
+                      onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> PesananList()));
+                      },
                       child: Text('Lihat Semua', style: TextStyle(fontSize: 14, color: AppColors.primaryColor),),
                     )
                   ],
