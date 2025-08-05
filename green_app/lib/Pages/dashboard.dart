@@ -36,7 +36,7 @@ class _DashboardState extends State<Dashboard> {
         return ListView.builder(
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
-          itemCount: 3,
+          itemCount: snapshot.data!.docs.length,
           itemBuilder: (context, index) {
             final data = snapshot.data!.docs[index];
             return PesananCard(
