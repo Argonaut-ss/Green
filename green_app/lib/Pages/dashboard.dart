@@ -104,28 +104,90 @@ class _DashboardState extends State<Dashboard> {
                 Text('Jasa', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),),
                 SizedBox(height: 26,),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    GestureDetector(
-                      onTap: (){},
-                      child: Column(
-                        children: [
-                          Image.asset('assets/laundry_icon.png', width: 71, height: 71),
-                          SizedBox(height: 4,),
-                          Text('Cuci', style: TextStyle(fontSize: 15),)
-                        ],
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          // Navigate to laundry service page
+                          print('Cuci tapped');
+                        },
+                        child: Container(
+                          height: 160,
+                          decoration: BoxDecoration(
+                            color: Color(0xFFE8F5E8), // Light green background
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 8,
+                                offset: Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                 'assets/dashboard_wash_icon.png',
+                                 width: 200,
+                                 height: 120,
+                                 fit: BoxFit.contain,
+                               ),
+                              SizedBox(height: 1),
+                              Text(
+                                'Cuci',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
-                    SizedBox(width: 12),
-                    GestureDetector(
-                      onTap: (){},
-                      child: Column(
-                        children: [
-                          Image.asset('assets/iron_icon.png', width: 71, height: 71),
-                          SizedBox(height: 4),
-                          Text('Setrika', style: TextStyle(fontSize: 15),)
-                        ],
+                    SizedBox(width: 16),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          // Navigate to ironing service page
+                          print('Setrika tapped');
+                        },
+                        child: Container(
+                          height: 160,
+                          decoration: BoxDecoration(
+                            color: Color(0xFFE8F5E8), // Light green background
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 8,
+                                offset: Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                 'assets/dashboard_ironing_icon.png',
+                                 width: 200,
+                                 height: 120,
+                                 fit: BoxFit.contain,
+                               ),
+                              SizedBox(height: 1),
+                              Text(
+                                'Setrika',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ],
