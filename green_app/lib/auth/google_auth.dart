@@ -100,22 +100,23 @@ class FirebaseService{
     try {
       User? currentUser = auth.currentUser;
       if (currentUser == null) {
-        throw Exception("No user is currently signed in.");
+        return 'client'; // Default if not signed in
       }
 
-      DocumentSnapshot userDoc = await _firestore
+      DocumentSnapshot<Map<String, dynamic>> userDoc = await _firestore
           .collection('users')
           .doc(currentUser.uid)
           .get();
 
-      if (userDoc.exists) {
-        return userDoc['role'] ?? 'client'; // Default to 'client' if role is not set
+      final data = userDoc.data();
+      if (data != null && data.containsKey('role')) {
+        return data['role'] ?? 'client';
       } else {
-        throw Exception("User document does not exist.");
+        return 'client'; // Default if role not found
       }
     } catch (e) {
       print("Error fetching user role: $e");
-      return 'client'; // Default role in case of error
+      return 'client';
     }
   }
 
