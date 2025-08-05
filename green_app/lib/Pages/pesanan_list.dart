@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:green_app/Custom/pesanan_card.dart';
 import 'package:green_app/Theme/colors.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class PesananList extends StatefulWidget {
   final void Function(Map<String, dynamic> article)? onPesananTap;
@@ -15,10 +16,25 @@ class PesananList extends StatefulWidget {
 class _PesananListState extends State<PesananList> {
   Stream<QuerySnapshot> _getPesananStream([String? category]) {
     var collection = FirebaseFirestore.instance.collection('pesanan');
-    if (category != null && category.isNotEmpty) {
-      return collection.where('status', isEqualTo: category).snapshots();
+    
+    // Get current user ID
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    String? userId = currentUser?.uid;
+    
+    if (userId == null) {
+      // If no user is logged in, return empty stream
+      return Stream.empty();
     }
-    return collection.snapshots();
+    
+    // Start with user filter
+    Query query = collection.where('userId', isEqualTo: userId);
+    
+    // Add category filter if provided
+    if (category != null && category.isNotEmpty) {
+      query = query.where('status', isEqualTo: category);
+    }
+    
+    return query.snapshots();
   }
 
   Widget buildPesananList(Stream<QuerySnapshot> stream) {
@@ -31,8 +47,15 @@ class _PesananListState extends State<PesananList> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
         }
+        
+        // Check if user is logged in
+        User? currentUser = FirebaseAuth.instance.currentUser;
+        if (currentUser == null) {
+          return Center(child: Text('Silakan login terlebih dahulu untuk melihat pesanan Anda.'));
+        }
+        
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return Center(child: Text('No pesanan found.'));
+          return Center(child: Text('Tidak ada pesanan yang ditemukan.'));
         }
         final docs = snapshot.data!.docs;
         return ListView.builder(
@@ -88,13 +111,19 @@ class _PesananListState extends State<PesananList> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Pesanan", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500)),
+                Text("Pesanan Saya", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500)),
                 const SizedBox(height: 27),
+                Text("Menunggu Konfirmasi", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.grey[600])),
+                const SizedBox(height: 10),
                 buildPesananList(_getPesananStream('Menunggu Konfirmasi')),
                 const SizedBox(height: 27),
-                Text("Sedang dikerjakan", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500)),
-                const SizedBox(height: 27),
+                Text("Sedang Dikerjakan", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.grey[600])),
+                const SizedBox(height: 10),
                 buildPesananList(_getPesananStream('Sedang Dikerjakan')),
+                const SizedBox(height: 27),
+                Text("Selesai", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.grey[600])),
+                const SizedBox(height: 10),
+                buildPesananList(_getPesananStream('Selesai')),
               ],
             ),
           ),
