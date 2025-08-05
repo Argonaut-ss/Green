@@ -63,12 +63,13 @@ class _PesananListState extends State<PesananList> {
         }
         final docs = snapshot.data!.docs;
         return ListView.builder(
+          padding: EdgeInsets.zero,
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
           itemCount: docs.length,          itemBuilder: (context, index) {
             final data = docs[index].data() as Map<String, dynamic>;
             return Padding(
-              padding: const EdgeInsets.only(bottom: 16.0, left: 16),
+              padding: const EdgeInsets.only(bottom: 8.0),
               child: GestureDetector(
                 onTap: () {
                   widget.onPesananTap?.call({
