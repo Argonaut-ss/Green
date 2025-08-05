@@ -4,6 +4,7 @@ import 'package:green_app/Custom/pesanan_card.dart';
 import 'package:green_app/Theme/colors.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 
 class PesananList extends StatefulWidget {
   final void Function(Map<String, dynamic> article)? onPesananTap;
@@ -14,6 +15,9 @@ class PesananList extends StatefulWidget {
 }
 
 class _PesananListState extends State<PesananList> {
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+
   Stream<QuerySnapshot> _getPesananStream([String? category]) {
     var collection = FirebaseFirestore.instance.collection('pesanan');
     
@@ -111,7 +115,36 @@ class _PesananListState extends State<PesananList> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Pesanan Saya", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500)),
+                
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        spreadRadius: 1,
+                        blurRadius: 4,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: TextField(
+                    controller: _searchController,
+                    onChanged: (value) {
+                      setState(() {
+                        _searchQuery = value;
+                      });
+                    },
+                    decoration: InputDecoration(
+                      hintText: 'Cari',
+                      hintStyle: TextStyle(color: Colors.grey[600]),
+                      prefixIcon: Icon(Icons.search, color: Colors.green),
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 27),
                 Text("Menunggu Konfirmasi", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.grey[600])),
                 const SizedBox(height: 10),
