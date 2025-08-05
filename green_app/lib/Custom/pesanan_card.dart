@@ -13,35 +13,21 @@ class PesananCard extends StatefulWidget {
 class _PesananCardState extends State<PesananCard> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        children: [
-          Image.asset('assets/wm_icon.png', width: 42, height: 46),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.namaPesanan,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
-                Text(
-                  widget.status,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w100,
-                    color: widget.statusColor,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: ListTile(
+        contentPadding: EdgeInsets.symmetric(horizontal: 16),
+        onTap: (){},
+        title: Text(widget.namaPesanan),
+        leading: Image.asset(
+          'assets/wm_icon.png',
+          width: 42,
+          height: 46,
+        ),
+        subtitle: Text(widget.status)
       ),
     );
   }

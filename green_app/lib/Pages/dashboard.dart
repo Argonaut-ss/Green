@@ -34,6 +34,7 @@ class _DashboardState extends State<Dashboard> {
           return Text('No pesanan found');
         }
         return ListView.builder(
+          padding: EdgeInsets.zero,
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
           itemCount: snapshot.data!.docs.length,
@@ -279,9 +280,8 @@ class _DashboardState extends State<Dashboard> {
                     )
                   ],
                 ),
-                SizedBox(height: 26,),
                 SizedBox(
-                  height: 200,
+                  height: 250,
                   child: buildPesananList(),
                 )
               ],
