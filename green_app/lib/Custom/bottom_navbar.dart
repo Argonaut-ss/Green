@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:green_app/Pages/add_pesanan.dart';
+import 'package:green_app/Pages/admin/admin_dashboard.dart';
 import 'package:green_app/Pages/dashboard.dart';
 import 'package:green_app/Pages/location.dart';
 import 'package:green_app/Pages/profile.dart';
@@ -8,7 +11,8 @@ import 'package:green_app/Pages/settings.dart';
 import 'package:green_app/Theme/colors.dart';
 
 class CustomBottomNavBarPage extends StatefulWidget {
-  const CustomBottomNavBarPage({Key? key}) : super(key: key);
+  final String role;
+  CustomBottomNavBarPage({Key? key, required this.role}) : super(key: key);
 
   @override
   _CustomBottomNavBarPageState createState() => _CustomBottomNavBarPageState();
@@ -17,13 +21,44 @@ class CustomBottomNavBarPage extends StatefulWidget {
 class _CustomBottomNavBarPageState extends State<CustomBottomNavBarPage> {
   int currentIndex = 0;
 
-  final screens = [
-    const Dashboard(),
+  List<Widget> get screens => [
+    widget.role == "client" ? Dashboard() : AdminDashboard(),
     const SettingsPage(),
     const AddPesanan(),
     const LocationPage(),
     const ProfilePage()
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.role == "penjual") {
+      _fetchAdminRole();
+    }
+  }
+
+  Stream<QuerySnapshot> _fetchAdminRole([String? role]) {
+    var collection = FirebaseFirestore.instance.collection('users');
+
+    // Get current user ID
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    String? userId = currentUser?.uid;
+
+    if (userId == null) {
+      return Stream.empty();
+    }
+
+    // Start with user filter
+    Query query = collection.where('userId', isEqualTo: userId);
+
+    // Add category filter if provided
+    if (role != null && role.isNotEmpty) {
+      query = query.where('role', isEqualTo: role);
+    }
+
+    return query.snapshots();
+  }
+
 
   @override
   Widget build(BuildContext context) {

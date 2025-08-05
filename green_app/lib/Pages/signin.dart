@@ -28,16 +28,15 @@ class _SigninState extends State<Signin> {
       _passwordController.text,
     );
     if (result.userCredential != null) {
-      // Example: get role from user data
-      final userRole = result.userCredential?.additionalUserInfo?.profile?['role'] ?? 'client';
+      // Fetch role from Firestore, not from profile
+      String userRole = await FirebaseService().getUserRole();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Sign in successful!')),
       );
-      if (userRole == 'client') {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const CustomBottomNavBarPage()));
-      } else {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CustomBottomNavBarPage()));
-      }
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => CustomBottomNavBarPage(role: userRole)),
+      );
       setState(() {
         _errorMessage = null;
       });
@@ -47,7 +46,6 @@ class _SigninState extends State<Signin> {
       });
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -172,17 +170,22 @@ class _SigninState extends State<Signin> {
                     onTap: () async {
                       final firebaseService = FirebaseService();
                       bool isAutoLogged = await firebaseService.autoSignInWithGoogle();
+                      String userRole = 'client'; // Default role
+
                       if (isAutoLogged) {
+                        // Fetch user role from Firestore or your backend
+                        userRole = await firebaseService.getUserRole();
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (context) => CustomBottomNavBarPage()),
+                          MaterialPageRoute(builder: (context) => CustomBottomNavBarPage(role: userRole)),
                         );
                       } else {
                         bool isLogged = await firebaseService.signinWithGoogle();
                         if (isLogged) {
+                          userRole = await firebaseService.getUserRole();
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (context) => CustomBottomNavBarPage()),
+                            MaterialPageRoute(builder: (context) => CustomBottomNavBarPage(role: userRole)),
                           );
                         }
                       }
