@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:green_app/Custom/bottom_navbar.dart';
 import 'package:green_app/Pages/pick_location.dart';
 import 'package:green_app/Theme/colors.dart';
+import 'package:green_app/auth/google_auth.dart';
 import 'package:green_app/controller.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -255,16 +256,21 @@ class _AddPesananState extends State<AddPesanan> {
                       deliv: _selectedPickup ?? '',
                       catatan: _noteController.text,
                     );
-                    
+
                     if (result == null) {
                       // Success
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('Pesanan berhasil ditambahkan!')),
                       );
+                      // Fetch user role before navigating
+                      String userRole = 'client';
+                      try {
+                        userRole = await FirebaseService().getUserRole();
+                      } catch (_) {}
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => CustomBottomNavBarPage()
+                          builder: (context) => CustomBottomNavBarPage(role: userRole),
                         ),
                       );
                     } else {
