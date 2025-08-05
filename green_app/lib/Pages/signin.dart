@@ -28,10 +28,16 @@ class _SigninState extends State<Signin> {
       _passwordController.text,
     );
     if (result.userCredential != null) {
+      // Example: get role from user data
+      final userRole = result.userCredential?.additionalUserInfo?.profile?['role'] ?? 'client';
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Sign in successful!')),
       );
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const CustomBottomNavBarPage()));
+      if (userRole == 'client') {
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const CustomBottomNavBarPage()));
+      } else {
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CustomBottomNavBarPage()));
+      }
       setState(() {
         _errorMessage = null;
       });
