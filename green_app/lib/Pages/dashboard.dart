@@ -116,13 +116,6 @@ class _DashboardState extends State<Dashboard> {
                           decoration: BoxDecoration(
                             color: Color(0xFFE8F5E8), // Light green background
                             borderRadius: BorderRadius.circular(15),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius: 8,
-                                offset: Offset(0, 4),
-                              ),
-                            ],
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -159,13 +152,6 @@ class _DashboardState extends State<Dashboard> {
                           decoration: BoxDecoration(
                             color: Color(0xFFE8F5E8), // Light green background
                             borderRadius: BorderRadius.circular(15),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius: 8,
-                                offset: Offset(0, 4),
-                              ),
-                            ],
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
