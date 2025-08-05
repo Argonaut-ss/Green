@@ -83,15 +83,40 @@ class _DashboardState extends State<Dashboard> {
                   ],
                 ),
                 SizedBox(height: 28,),
-                TextField(
-                  decoration: InputDecoration(
-                    hintText: 'cari',
-                    prefixIcon: Icon(CupertinoIcons.search),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20)
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(25),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 8,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'cari',
+                      hintStyle: TextStyle(
+                        color: Color(0xFF2E7D32), // Dark green text color
+                        fontSize: 16,
+                      ),
+                      prefixIcon: Icon(
+                        CupertinoIcons.search,
+                        color: Color(0xFF2E7D32), // Green search icon
+                        size: 20,
+                      ),
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 16,
+                      ),
                     ),
-                    filled: true,
-                    fillColor: Colors.white,
+                    style: TextStyle(
+                      color: Color(0xFF2E7D32), // Dark green text color
+                      fontSize: 16,
+                    ),
                   ),
                 )
               ],
