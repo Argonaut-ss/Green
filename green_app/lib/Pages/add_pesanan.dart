@@ -20,11 +20,13 @@ class AddPesanan extends StatefulWidget {
 class _AddPesananState extends State<AddPesanan> {
 
   final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _noteController = TextEditingController();
   final AddPesananAPI _pesananController = AddPesananAPI ();
 
   String namaPesanan = '';
+  String phone = '';
   String alamat = '';
   String jasa = '';
   String deliv = '';
@@ -120,6 +122,21 @@ class _AddPesananState extends State<AddPesanan> {
                   ),
                 ),
                 const SizedBox(height: 12),
+                TextField(
+                  controller: _phoneController,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.phone),
+                    hintText: 'Nomor telepon',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(
+                        color: Colors.black45,
+                        width: 1,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 16),
                 DropdownButtonFormField<String>(
                   isExpanded: true,
                   value: _selectedService,
@@ -233,6 +250,7 @@ class _AddPesananState extends State<AddPesanan> {
                     final result = await _pesananController.addPesananAPI(
                       namaPesanan: _nameController.text,
                       alamat: _addressController.text,
+                      phone: _phoneController.text,
                       jasa: _selectedService ?? '',
                       deliv: _selectedPickup ?? '',
                       catatan: _noteController.text,

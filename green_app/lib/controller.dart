@@ -114,6 +114,7 @@ class AddPesananAPI {
   Future<String?> addPesananAPI({
     required String namaPesanan,
     required String alamat,
+    required String phone,
     required String jasa,
     required String deliv,
     required String catatan,
@@ -128,6 +129,7 @@ class AddPesananAPI {
           'createdAt': FieldValue.serverTimestamp(),
           'namaPesanan': namaPesanan,
           'alamat': alamat,
+          'telepon': phone,
           'jasa': jasa,
           'deliv': deliv,
           'catatan': catatan,
