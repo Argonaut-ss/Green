@@ -53,6 +53,7 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(
+        padding: EdgeInsets.only(bottom: 35), // Add padding to avoid FAB overlay
         children: [
           Container(
             padding: EdgeInsets.all(24),
