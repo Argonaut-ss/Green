@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:green_app/Custom/custom_decoration_field.dart';
 import 'package:green_app/Custom/pesanan_card.dart';
+import 'package:green_app/Pages/pesanan_list.dart';
 import 'package:green_app/Theme/colors.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:green_app/controller.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -12,10 +15,45 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+
+  Widget buildPesananList() {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      return Text('Not signed in');
+    }
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection('pesanan')
+          .where('userId', isEqualTo: user.uid)
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        }
+        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+          return Text('No pesanan found');
+        }
+        return ListView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: snapshot.data!.docs.length,
+          itemBuilder: (context, index) {
+            final data = snapshot.data!.docs[index];
+            return PesananCard(
+              namaPesanan: data['namaPesanan'] ?? '',
+              status: data['status'] ?? '',
+            );
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(
+        padding: EdgeInsets.only(bottom: 35), // Add padding to avoid FAB overlay
         children: [
           Container(
             padding: EdgeInsets.all(24),
@@ -66,28 +104,76 @@ class _DashboardState extends State<Dashboard> {
                 Text('Jasa', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),),
                 SizedBox(height: 26,),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    GestureDetector(
-                      onTap: (){},
-                      child: Column(
-                        children: [
-                          Image.asset('assets/laundry_icon.png', width: 71, height: 71),
-                          SizedBox(height: 4,),
-                          Text('Cuci', style: TextStyle(fontSize: 15),)
-                        ],
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          // Navigate to laundry service page
+                          print('Cuci tapped');
+                        },
+                        child: Container(
+                          height: 160,
+                          decoration: BoxDecoration(
+                            color: Color(0xFFE8F5E8), // Light green background
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                 'assets/dashboard_wash_icon.png',
+                                 width: 200,
+                                 height: 120,
+                                 fit: BoxFit.contain,
+                               ),
+                              SizedBox(height: 1),
+                              Text(
+                                'Cuci',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
-                    SizedBox(width: 12),
-                    GestureDetector(
-                      onTap: (){},
-                      child: Column(
-                        children: [
-                          Image.asset('assets/iron_icon.png', width: 71, height: 71),
-                          SizedBox(height: 4),
-                          Text('Setrika', style: TextStyle(fontSize: 15),)
-                        ],
+                    SizedBox(width: 16),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          // Navigate to ironing service page
+                          print('Setrika tapped');
+                        },
+                        child: Container(
+                          height: 160,
+                          decoration: BoxDecoration(
+                            color: Color(0xFFE8F5E8), // Light green background
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                 'assets/dashboard_ironing_icon.png',
+                                 width: 200,
+                                 height: 120,
+                                 fit: BoxFit.contain,
+                               ),
+                              SizedBox(height: 1),
+                              Text(
+                                'Setrika',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -186,13 +272,18 @@ class _DashboardState extends State<Dashboard> {
                     Text('Pesanan', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),),
                     Spacer(),
                     TextButton(
-                      onPressed: (){},
+                      onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> PesananList()));
+                      },
                       child: Text('Lihat Semua', style: TextStyle(fontSize: 14, color: AppColors.primaryColor),),
                     )
                   ],
                 ),
                 SizedBox(height: 26,),
-                PesananCard(namaPesanan: 'Pesanan Samy', status: 'Sudah selesai', statusColor: AppColors.secondaryColor,)
+                SizedBox(
+                  height: 200,
+                  child: buildPesananList(),
+                )
               ],
             ),
           ),
