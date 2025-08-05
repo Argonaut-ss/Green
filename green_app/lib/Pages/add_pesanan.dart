@@ -121,7 +121,7 @@ class _AddPesananState extends State<AddPesanan> {
                 ),
                 const SizedBox(height: 12),
                 DropdownButtonFormField<String>(
-                  isExpanded: false,
+                  isExpanded: true,
                   value: _selectedService,
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.local_laundry_service_rounded),
@@ -159,6 +159,7 @@ class _AddPesananState extends State<AddPesanan> {
                       ),
                     ),
                   ),
+                  isExpanded: true,
                   hint: const Text('Taruh di toko atau dijemput ke rumah'),
                   items: ['Taruh di toko', 'Dijemput']
                       .map((e) => DropdownMenuItem(
