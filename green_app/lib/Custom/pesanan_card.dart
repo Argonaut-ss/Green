@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:green_app/Theme/colors.dart';
 
 class PesananCard extends StatefulWidget {
   String namaPesanan;
@@ -15,8 +16,13 @@ class _PesananCardState extends State<PesananCard> {
   Widget build(BuildContext context) {
     return Card(
       elevation: 4,
+      color: AppColors.primarywhite,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(
+          color: Colors.transparent,
+          width: 2,
+        ),
+        borderRadius: BorderRadius.circular(10),
       ),
       child: ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 16),

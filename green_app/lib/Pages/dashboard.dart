@@ -53,6 +53,7 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.primarywhite,
       body: ListView(
         padding: EdgeInsets.only(bottom: 35), // Add padding to avoid FAB overlay
         children: [
@@ -281,7 +282,7 @@ class _DashboardState extends State<Dashboard> {
                   ],
                 ),
                 SizedBox(
-                  height: 250,
+                  height: 240,
                   child: buildPesananList(),
                 )
               ],

@@ -64,11 +64,13 @@ class SignupController {
       );
       User? user = userCredential.user;
       if (user != null) {
+        final String role = 'client';
         await user.updateDisplayName(name);
         await _firestore.collection('users').doc(user.uid).set({
           'name': name,
           'email': email,
           'phone': phone,
+          'role': role,
           'password': password,
           'createdAt': FieldValue.serverTimestamp(),
         });
