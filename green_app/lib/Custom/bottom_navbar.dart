@@ -28,91 +28,107 @@ class _CustomBottomNavBarPageState extends State<CustomBottomNavBarPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, '/addPesanan');
-        },
-        backgroundColor: AppColors.secondaryColor,
-        elevation: 4,
-        shape: CircleBorder(),
-        child: Icon(CupertinoIcons.plus_app, color: Colors.white),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      body: screens[currentIndex],
-      bottomNavigationBar: ClipRRect(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
-        child: BottomAppBar(
-          shape: SmoothNotchedShape(),
-          height: 70,
-          notchMargin: 5,
-          color: Color(0xffFFFFF),
-          elevation: 1,
-          shadowColor: Color(0xff000000).withOpacity(0.1),
-          surfaceTintColor: Color(0xffFFFFF),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                icon: Icon(
-                  CupertinoIcons.house,
-                  color: currentIndex == 0 ? AppColors.secondaryColor : AppColors.primaryColor,
-                ),
-                onPressed: () => setState(() => currentIndex = 0),
-              ),
-              IconButton(
-                icon: Icon(
-                  CupertinoIcons.gear,
-                  color: currentIndex == 1 ? AppColors.secondaryColor : AppColors.primaryColor,
-                ),
-                onPressed: () => setState(() => currentIndex = 1),
-              ),
-              SizedBox(width: 48),
-              IconButton(
-                icon: Icon(
-                  CupertinoIcons.location_solid,
-                  color: currentIndex == 3? AppColors.secondaryColor : AppColors.primaryColor,
-                ),
-                onPressed: () => setState(() => currentIndex = 3),
-              ),// Space for the floating action button
-              IconButton(
-                icon: Icon(
-                  CupertinoIcons.person,
-                  color: currentIndex == 4 ? AppColors.secondaryColor : AppColors.primaryColor,
-                ),
-                onPressed: () => setState(() => currentIndex = 4),
-              ),
-
-            ],
-          ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.pushNamed(context, '/addPesanan');
+          },
+          backgroundColor: AppColors.secondaryColor,
+          elevation: 4,
+          shape: CircleBorder(),
+          child: Icon(CupertinoIcons.plus_app, color: Colors.white),
         ),
-      )
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        body: screens[currentIndex],
+      bottomNavigationBar: Stack(
+        children: [
+          CustomPaint(
+            size: Size(MediaQuery.of(context).size.width, 70),
+            painter: BottomNavBarBorderPainter(
+              notchedShape: CustomCircularNotchedRectangle(),
+              borderColor: Colors.grey,
+              borderWidth: 1.0,
+            ),
+          ),
+          BottomAppBar(
+            shape: CustomCircularNotchedRectangle(),
+            notchMargin: 6,
+            height: 70,
+            color: AppColors.primarywhite,
+            elevation: 0, // remove shadow for better custom border
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  icon: Icon(
+                    CupertinoIcons.house,
+                    color: currentIndex == 0 ? AppColors.secondaryColor : AppColors.primaryColor,
+                  ),
+                  onPressed: () => setState(() => currentIndex = 0),
+                ),
+                IconButton(
+                  icon: Icon(
+                    CupertinoIcons.gear,
+                    color: currentIndex == 1 ? AppColors.secondaryColor : AppColors.primaryColor,
+                  ),
+                  onPressed: () => setState(() => currentIndex = 1),
+                ),
+                SizedBox(width: 48),
+                IconButton(
+                  icon: Icon(
+                    CupertinoIcons.location_solid,
+                    color: currentIndex == 3 ? AppColors.secondaryColor : AppColors.primaryColor,
+                  ),
+                  onPressed: () => setState(() => currentIndex = 3),
+                ),
+                IconButton(
+                  icon: Icon(
+                    CupertinoIcons.person,
+                    color: currentIndex == 4 ? AppColors.secondaryColor : AppColors.primaryColor,
+                  ),
+                  onPressed: () => setState(() => currentIndex = 4),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+
     );
   }
 }
 
-class SmoothNotchedShape extends NotchedShape {
+class CustomCircularNotchedRectangle extends NotchedShape {
   @override
   Path getOuterPath(Rect host, Rect? guest) {
-    if (guest == null) return Path()..addRect(host);
+    if (guest == null || !host.overlaps(guest)) {
+      return Path()..addRect(host);
+    }
 
-    final double notchRadius = guest.width / 2.0;
-    final double s1 = 15.0;
-    final double s2 = 1.0;
+    final notchRadius = 30;
+    const notchMargin = 8.0;
+    final r = notchRadius + notchMargin;
 
-    final double r = notchRadius;
-    final double a = -1.0 * r - s2;
-    final double b = host.top;
+    final notchCenterX = guest.center.dx;
+
+    final s1 = 20.0;
+    final s2 = 5.0;
 
     final Path path = Path()
       ..moveTo(host.left, host.top)
-      ..lineTo(guest.center.dx + a, host.top);
-
-    final Rect notchRect = Rect.fromCircle(center: guest.center, radius: r + s1);
-
-    path.arcTo(notchRect, 3.14, -3.14, false);
-
-    path
-      ..lineTo(guest.center.dx - a, host.top)
+      ..lineTo(notchCenterX - r - s1, host.top)
+      ..quadraticBezierTo(
+        notchCenterX - r - s2, host.top,
+        notchCenterX - r, host.top + s2,
+      )
+      ..arcToPoint(
+        Offset(notchCenterX + r, host.top + s2),
+        radius: Radius.circular(r),
+        clockwise: false,
+      )
+      ..quadraticBezierTo(
+        notchCenterX + r + s2, host.top,
+        notchCenterX + r + s1, host.top,
+      )
       ..lineTo(host.right, host.top)
       ..lineTo(host.right, host.bottom)
       ..lineTo(host.left, host.bottom)
@@ -121,3 +137,40 @@ class SmoothNotchedShape extends NotchedShape {
     return path;
   }
 }
+
+
+
+
+class BottomNavBarBorderPainter extends CustomPainter {
+  final NotchedShape notchedShape;
+  final Color borderColor;
+  final double borderWidth;
+
+  BottomNavBarBorderPainter({
+    required this.notchedShape,
+    this.borderColor = Colors.black,
+    this.borderWidth = 1.0,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final host = Offset.zero & size;
+    final guest = Rect.fromCircle(
+      center: Offset(size.width / 2, 0), // FAB position (center top)
+      radius: 30, // Same as FAB radius
+    );
+
+    final path = notchedShape.getOuterPath(host, guest);
+
+    final paint = Paint()
+      ..color = borderColor
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = borderWidth;
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
