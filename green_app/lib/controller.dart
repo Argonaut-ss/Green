@@ -125,6 +125,7 @@ class AddPesananAPI {
         final String status = 'Menunggu Konfirmasi';
         await _firestore.collection('pesanan').add({
           'userId': user.uid,
+          'createdAt': FieldValue.serverTimestamp(),
           'namaPesanan': namaPesanan,
           'alamat': alamat,
           'jasa': jasa,
