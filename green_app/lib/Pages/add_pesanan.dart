@@ -173,42 +173,44 @@ class _AddPesananState extends State<AddPesanan> {
                   },
                 ),
                 const SizedBox(height: 16),
-                TextField(
-                  controller: _noteController,
-                  decoration: InputDecoration(
-                    hintText: 'Beri catatan',
-                    hintStyle: const TextStyle(color: Colors.black54),
-                    filled: true,
-                    fillColor: const Color(0xFFFEF8FF), // latar mirip yg di gambar
-                    prefixIcon: SizedBox(
-                      height: 20,
-                        width: 20,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Align(alignment: Alignment.centerLeft,child: Image.asset('assets/note_icon.png', height: 28, width: 28)),
-                        )),
-                    contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(
-                        color: Colors.black45,
-                        width: 1,
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black45, width: 1),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16, top: 12, bottom: 8),
+                        child: Row(
+                          children: [
+                            Image.asset('assets/note_icon.png', height: 20, width: 20),
+                            const SizedBox(width: 8),
+                            const Text(
+                              'Catatan',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black87,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(
-                        color: Colors.black45,
-                        width: 1,
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16, right: 16, bottom: 12),
+                        child: TextField(
+                          controller: _noteController,
+                          maxLines: 4,
+                          decoration: const InputDecoration(
+                            hintText: '',
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.zero,
+                          ),
+                        ),
                       ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(
-                        color: Colors.black87,
-                        width: 1.2,
-                      ),
-                    ),
+                    ],
                   ),
                 )
               ],
