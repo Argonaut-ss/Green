@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:green_app/Theme/colors.dart';
+import 'package:flutter/cupertino.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
@@ -9,133 +10,166 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController addressController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    // Optional: isi default values
-    nameController.text = "Muhammad Samy Syafta";
-    phoneController.text = "088888888888";
-    emailController.text = "user@gmail.com";
-    addressController.text = "Jl. Pondok Petir no 47 bla bla bla...";
-  }
-
   @override
   Widget build(BuildContext context) {
+    final media = MediaQuery.of(context);
+    final screenHeight = media.size.height;
+    final screenWidth = media.size.width;
+
     return Scaffold(
       backgroundColor: AppColors.primarywhite,
-      body: Stack(
-        children: [
-          // Bagian hijau atas
-          Positioned(
+      body: SafeArea(
+        child: Stack(
+          children: [
+            // Header Image
+            Positioned(
               top: 0,
               left: 0,
               right: 0,
-              child: Image.asset('assets/header_ep.png')),
-          SafeArea(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.only(top: 0, left: 16, right: 16),
-              child: Column(
+              child: Image.asset(
+                'assets/header_ep.png',
+                width: screenWidth,
+                height: screenHeight * 0.22,
+                fit: BoxFit.cover,
+              ),
+            ),
+
+            Positioned(
+              top: 32,
+              left: 0,
+              right: 0,
+              child: Stack(
+                alignment: Alignment.center,
                 children: [
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: IconButton(
-                          icon: Icon(Icons.arrow_back, color: AppColors.primarywhite),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ),
-                      Center(
-                        child: Text(
-                          "Edit Profile",
-                          style: TextStyle(
-                            color: AppColors.primarywhite,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 16),
-                  Stack(
-                    alignment: Alignment.bottomRight,
-                    children: [
-                      CircleAvatar(
-                        radius: 60,
-                        backgroundImage: AssetImage('assets/profile_img.png'), // Ganti dengan gambar kamu
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: CircleAvatar(
-                          radius: 18,
-                          backgroundColor: Colors.green,
-                          child: Icon(Icons.camera_alt, color: Colors.white, size: 16),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 32),
-                  buildInputField("Name", nameController),
-                  buildInputField("Nomor Telepon", phoneController, keyboardType: TextInputType.phone),
-                  buildInputField("Email", emailController, keyboardType: TextInputType.emailAddress),
-                  buildInputField("Alamat", addressController, maxLines: 2),
-                  SizedBox(height: 24),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Simpan data
-                      print("Saved");
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                      padding: EdgeInsets.symmetric(vertical: 14, horizontal: 40),
+                  // Judul di tengah
+                  Text(
+                    'Edit Profile',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
                     ),
-                    child: Text("save", style: TextStyle(fontSize: 16, color: AppColors.primarywhite)),
                   ),
-                  SizedBox(height: 32),
+
+                  // Tombol back di kiri
+                  Positioned(
+                    left: 16,
+                    child: IconButton(
+                      icon: Icon(Icons.arrow_back, color: Colors.white),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
                 ],
               ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
 
-  Widget buildInputField(String label, TextEditingController controller,
-      {TextInputType keyboardType = TextInputType.text, int maxLines = 1}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(label,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-        SizedBox(height: 8),
-        TextField(
-          controller: controller,
-          keyboardType: keyboardType,
-          maxLines: maxLines,
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: Colors.grey.shade100,
-            contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: Colors.grey.shade400),
+
+            // Scrollable Content
+            Positioned.fill(
+              top: screenHeight * 0.14,
+              child: SingleChildScrollView(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  children: [
+                    // Avatar
+                    Stack(
+                      children: [
+                        CircleAvatar(
+                          radius: screenWidth * 0.15,
+                          backgroundImage: AssetImage('assets/profile_img.png'),
+                        ),
+                        Positioned(
+                          bottom: -10,
+                          right: 0,
+                          child: CircleAvatar(
+                            radius: screenWidth * 0.05,
+                            backgroundColor: Colors.white,
+                            child: IconButton(
+                              icon: Icon(CupertinoIcons.camera, size: 20, color: AppColors.primaryColor),
+                              onPressed: () {
+                                // Handle change avatar logic
+                              },
+                            ),
+                          ),
+                        ),
+                      ]
+                    ),
+                    SizedBox(height: 16),
+
+                    // Edit Profile Title
+                    Text(
+                      "Edit Profile",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+
+                    SizedBox(height: 24),
+
+                    // Example Form Field (You can add more here)
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: "Full Name",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 16),
+
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: "Email Address",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 16),
+
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: "Phone Number",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: 32),
+
+                    // Save Button
+                    ElevatedButton(
+                      onPressed: () {
+                        // Handle save logic
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: screenWidth * 0.2,
+                          vertical: 14,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: Text(
+                        "Save",
+                        style: TextStyle(color: AppColors.primarywhite),
+                      ),
+                    ),
+
+                    SizedBox(height: 32),
+                  ],
+                ),
+              ),
             ),
-          ),
+          ],
         ),
-        SizedBox(height: 16),
-      ],
+      ),
     );
   }
 }
