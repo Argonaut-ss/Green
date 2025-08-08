@@ -20,17 +20,17 @@ class FirebaseService{
       final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
 
       final AuthCredential authCredential = GoogleAuthProvider.credential(
-        accessToken: googleSignInAuthentication.accessToken, 
-        idToken: googleSignInAuthentication.idToken
+          accessToken: googleSignInAuthentication.accessToken,
+          idToken: googleSignInAuthentication.idToken
       );
-      
+
       final UserCredential userCredential = await auth.signInWithCredential(authCredential);
-      
+
       // Save user data to Firestore
       if (userCredential.user != null) {
         await _saveUserToFirestore(userCredential.user!, googleSignInAccount);
       }
-      
+
       return true;
     } on FirebaseAuthException catch(e) {
       print(e.toString());
@@ -50,12 +50,12 @@ class FirebaseService{
         idToken: googleSignInAuthentication.idToken,
       );
       final UserCredential userCredential = await auth.signInWithCredential(authCredential);
-      
+
       // Save user data to Firestore
       if (userCredential.user != null) {
         await _saveUserToFirestore(userCredential.user!, googleSignInAccount);
       }
-      
+
       return true;
     } on FirebaseAuthException catch (e) {
       print(e.toString());
@@ -67,7 +67,7 @@ class FirebaseService{
     try {
       // Check if user document already exists
       final userDoc = await _firestore.collection('users').doc(user.uid).get();
-      
+
       if (!userDoc.exists) {
         final String role = 'client';
 

@@ -25,15 +25,15 @@ class _PesananCardState extends State<PesananCard> {
         borderRadius: BorderRadius.circular(10),
       ),
       child: ListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 16),
-        onTap: (){},
-        title: Text(widget.namaPesanan),
-        leading: Image.asset(
-          'assets/wm_icon.png',
-          width: 42,
-          height: 46,
-        ),
-        subtitle: Text(widget.status)
+          contentPadding: EdgeInsets.symmetric(horizontal: 16),
+          onTap: (){},
+          title: Text(widget.namaPesanan),
+          leading: Image.asset(
+            'assets/wm_icon.png',
+            width: 42,
+            height: 46,
+          ),
+          subtitle: Text(widget.status)
       ),
     );
   }

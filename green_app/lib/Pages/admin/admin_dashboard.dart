@@ -55,27 +55,27 @@ class _AdminDashboardState extends State<AdminDashboard> {
           physics: NeverScrollableScrollPhysics(),
           itemCount: 2,
           itemBuilder: (context, index) {
-          final data = docs[index].data() as Map<String, dynamic>;
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: GestureDetector(
-              onTap: () {
-                widget.onPesananTap?.call({
-                  'namaPesanan': data['namaPesanan'] ?? 'No Pesanan Name',
-                  'alamat': data['alamat'] ?? 'No Address',
-                  'catatan': data['catatan'] ?? 'No notes available.',
-                  'deliv': data['deliv'] ?? 'Unknown',
-                  'jasa': data['jasa'] ?? 'Unknown.',
-                  'status': data['status'] ?? 'Not Ready',
-                });
-              },
-              child: PesananCard(
-                namaPesanan: data['namaPesanan'] ?? 'Gada',
-                status: data['status'] ?? 'Not Ready',
+            final data = docs[index].data() as Map<String, dynamic>;
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: GestureDetector(
+                onTap: () {
+                  widget.onPesananTap?.call({
+                    'namaPesanan': data['namaPesanan'] ?? 'No Pesanan Name',
+                    'alamat': data['alamat'] ?? 'No Address',
+                    'catatan': data['catatan'] ?? 'No notes available.',
+                    'deliv': data['deliv'] ?? 'Unknown',
+                    'jasa': data['jasa'] ?? 'Unknown.',
+                    'status': data['status'] ?? 'Not Ready',
+                  });
+                },
+                child: PesananCard(
+                  namaPesanan: data['namaPesanan'] ?? 'Gada',
+                  status: data['status'] ?? 'Not Ready',
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
         );
       },
     );

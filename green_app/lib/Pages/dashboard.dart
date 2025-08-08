@@ -148,11 +148,11 @@ class _DashboardState extends State<Dashboard> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Image.asset(
-                                 'assets/dashboard_wash_icon.png',
-                                 width: 200,
-                                 height: 120,
-                                 fit: BoxFit.contain,
-                               ),
+                                'assets/dashboard_wash_icon.png',
+                                width: 200,
+                                height: 120,
+                                fit: BoxFit.contain,
+                              ),
                               SizedBox(height: 1),
                               Text(
                                 'Cuci',
@@ -184,11 +184,11 @@ class _DashboardState extends State<Dashboard> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Image.asset(
-                                 'assets/dashboard_ironing_icon.png',
-                                 width: 200,
-                                 height: 120,
-                                 fit: BoxFit.contain,
-                               ),
+                                'assets/dashboard_ironing_icon.png',
+                                width: 200,
+                                height: 120,
+                                fit: BoxFit.contain,
+                              ),
                               SizedBox(height: 1),
                               Text(
                                 'Setrika',
@@ -216,15 +216,15 @@ class _DashboardState extends State<Dashboard> {
                 Text('Jasa Popular', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),),
                 SizedBox(height: 26,),
                 SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        GestureDetector(
-                          onTap: (){},
-                          child: SizedBox(
-                            height: 140,
-                            width: 268,
-                            child: Stack(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: (){},
+                        child: SizedBox(
+                          height: 140,
+                          width: 268,
+                          child: Stack(
                               children: [
                                 Image.asset('assets/nyetrika.png', fit: BoxFit.cover, width: 268, height: 140,),
                                 Padding(padding: EdgeInsets.all(16),
@@ -247,46 +247,46 @@ class _DashboardState extends State<Dashboard> {
                                   ),
                                 ),
                               ]
-                            ),
                           ),
                         ),
-                        SizedBox(width: 14,),
-                        GestureDetector(
-                          onTap: (){},
-                          child: SizedBox(
-                            height: 140,
-                            width: 268,
-                            child: Stack(
-                                children: [
-                                  ClipRRect(
-                                      child: Image.asset('assets/nyuci.png', fit: BoxFit.cover, width: 268, height: 140,),
+                      ),
+                      SizedBox(width: 14,),
+                      GestureDetector(
+                        onTap: (){},
+                        child: SizedBox(
+                          height: 140,
+                          width: 268,
+                          child: Stack(
+                              children: [
+                                ClipRRect(
+                                  child: Image.asset('assets/nyuci.png', fit: BoxFit.cover, width: 268, height: 140,),
                                   borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  Padding(padding: EdgeInsets.all(16),
-                                    child: Container(
-                                      height: 33,
-                                      width: 59,
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(10),
-                                          color: AppColors.primarywhite
-                                      ),
-                                      child: Row(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Text('4.9', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),),
-                                          SizedBox(width: 4),
-                                          Icon(CupertinoIcons.star_fill, color: Colors.yellow, size: 16,),
-                                        ],
-                                      ),
+                                ),
+                                Padding(padding: EdgeInsets.all(16),
+                                  child: Container(
+                                    height: 33,
+                                    width: 59,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: AppColors.primarywhite
+                                    ),
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text('4.9', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),),
+                                        SizedBox(width: 4),
+                                        Icon(CupertinoIcons.star_fill, color: Colors.yellow, size: 16,),
+                                      ],
                                     ),
                                   ),
-                                ]
-                            ),
+                                ),
+                              ]
                           ),
                         ),
-                      ],
-                    ),)
+                      ),
+                    ],
+                  ),)
               ],
             ),
           ),

@@ -63,17 +63,17 @@ class _CustomBottomNavBarPageState extends State<CustomBottomNavBarPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.pushNamed(context, '/addPesanan');
-          },
-          backgroundColor: AppColors.secondaryColor,
-          elevation: 4,
-          shape: CircleBorder(),
-          child: Icon(CupertinoIcons.plus_app, color: Colors.white),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        body: screens[currentIndex],
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, '/addPesanan');
+        },
+        backgroundColor: AppColors.secondaryColor,
+        elevation: 4,
+        shape: CircleBorder(),
+        child: Icon(CupertinoIcons.plus_app, color: Colors.white),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      body: screens[currentIndex],
       bottomNavigationBar: Stack(
         children: [
           CustomPaint(
@@ -208,4 +208,3 @@ class BottomNavBarBorderPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
-
