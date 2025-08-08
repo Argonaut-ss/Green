@@ -55,7 +55,7 @@ class _SignupState extends State<Signup> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+        backgroundColor: Colors.white,
         body: SafeArea(
           child: LayoutBuilder(
             builder: (context, constraints) {
@@ -195,5 +195,5 @@ class _SignupState extends State<Signup> {
             },
           ),
         ));
-        }
+  }
 }
