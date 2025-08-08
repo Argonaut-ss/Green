@@ -1,6 +1,8 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:green_app/Pages/edit_profile.dart';
 import 'package:green_app/Theme/colors.dart';
+import 'package:green_app/auth/google_auth.dart';
 import 'package:green_app/controller.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -11,6 +13,25 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  FirebaseService firebaseService = FirebaseService();
+
+  Map<String, dynamic>? userData;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserData();
+  }
+
+  Future<void> fetchUserData() async {
+    final data = await firebaseService.getUserData();
+    setState(() {
+      userData = data;
+      isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final media = MediaQuery.of(context);
@@ -64,29 +85,35 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Column(
                       children: [
                         // Avatar
-                        CircleAvatar(
-                          radius: screenWidth * 0.15,
-                          backgroundImage: AssetImage('assets/profile_img.png'),
-                        ),
-                        SizedBox(height: 12),
-
-                        // Name, Role, Location
-                        Text(
-                          "Melissa peters",
-                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          "Interior designer",
-                          style: TextStyle(color: Colors.grey.shade600),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                        isLoading
+                            ? CircularProgressIndicator()
+                            :  Column(
                           children: [
-                            Icon(Icons.location_on, size: 16, color: Colors.grey),
-                            SizedBox(width: 4),
+                            CircleAvatar(
+                              radius: screenWidth * 0.15,
+                              backgroundImage: NetworkImage(userData?['photoURL'] ?? 'https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg'),
+                            ),
+                            SizedBox(height: 12),
+
+                            // Name, Role, Location
                             Text(
-                              "Lagos, Nigeria",
+                              userData?['name'] ?? 'No Name',
+                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              userData?['role'] ?? 'Client',
                               style: TextStyle(color: Colors.grey.shade600),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.location_on, size: 16, color: Colors.grey),
+                                SizedBox(width: 4),
+                                Text(
+                                  userData?['location'] ?? 'Unknown',
+                                  style: TextStyle(color: Colors.grey.shade600),
+                                ),
+                              ],
                             ),
                           ],
                         ),

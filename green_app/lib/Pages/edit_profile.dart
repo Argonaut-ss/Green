@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:green_app/Theme/colors.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:green_app/auth/google_auth.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
@@ -10,6 +11,42 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
+
+  FirebaseService firebaseService = FirebaseService();
+
+  Map<String, dynamic>? userData;
+  bool isLoading = true;
+
+  Future<void> fetchUserData() async {
+    final data = await firebaseService.getUserData();
+    if (data != null) {
+      setState(() {
+        userData = data;
+        nameController.text = data['name'] ?? "";
+        phoneController.text = data['phone'] ?? "";
+        emailController.text = data['email'] ?? "";
+        addressController.text = data['address'] ?? "";
+        isLoading = false;
+      });
+    } else {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    // Optional: isi default values
+    fetchUserData();
+  }
+
   @override
   Widget build(BuildContext context) {
     final media = MediaQuery.of(context);
@@ -19,7 +56,9 @@ class _EditProfileState extends State<EditProfile> {
     return Scaffold(
       backgroundColor: AppColors.primarywhite,
       body: SafeArea(
-        child: Stack(
+        child: isLoading
+            ? Center(child: CircularProgressIndicator())
+            : Stack(
           children: [
             // Header Image
             Positioned(
@@ -78,7 +117,7 @@ class _EditProfileState extends State<EditProfile> {
                       children: [
                         CircleAvatar(
                           radius: screenWidth * 0.15,
-                          backgroundImage: AssetImage('assets/profile_img.png'),
+                          backgroundImage: NetworkImage(userData?['photoURL'] ?? 'https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg'),
                         ),
                         Positioned(
                           bottom: -10,
@@ -98,67 +137,71 @@ class _EditProfileState extends State<EditProfile> {
                     ),
                     SizedBox(height: 16),
 
-                    // Edit Profile Title
-                    Text(
-                      "Edit Profile",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    buildInputField(
+                      "Name",
+                      nameController,
+                      hint: (userData?['name']?.isEmpty ?? true) ? "Nama Lengkap" : userData!['name'],
+                    ),
+                    buildInputField(
+                      "Nomor Telepon",
+                      phoneController,
+                      keyboardType: TextInputType.phone,
+                      hint: (userData?['phone']?.isEmpty ?? true) ? "Nomor Telepon" : userData!['phone'],
+                    ),
+                    buildInputField(
+                      "Email",
+                      emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      hint: (userData?['email']?.isEmpty ?? true) ? "Email" : userData!['email'],
+                    ),
+                    buildInputField(
+                      "Alamat",
+                      addressController,
+                      maxLines: 2,
+                      hint: (userData?['location']?.isEmpty ?? true) ? "Alamat" : userData!['location'],
                     ),
 
-                    SizedBox(height: 24),
-
-                    // Example Form Field (You can add more here)
-                    TextFormField(
-                      decoration: InputDecoration(
-                        labelText: "Full Name",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 16),
-
-                    TextFormField(
-                      decoration: InputDecoration(
-                        labelText: "Email Address",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 16),
-
-                    TextFormField(
-                      decoration: InputDecoration(
-                        labelText: "Phone Number",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                    ),
-
-                    SizedBox(height: 32),
+                    SizedBox(height: 24,),
 
                     // Save Button
-                    ElevatedButton(
-                      onPressed: () {
-                        // Handle save logic
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: screenWidth * 0.2,
-                          vertical: 14,
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          final firebaseService = FirebaseService();
+
+                          bool success = await firebaseService.updateUserData(
+                            name: nameController.text,
+                            phone: phoneController.text,
+                            email: emailController.text,
+                            location: addressController.text,
+                          );
+
+                          if (success) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Data berhasil diperbarui')),
+                            );
+                            Navigator.pop(context); // Kembali ke halaman profile
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Gagal memperbarui data')),
+                            );
+                          }
+
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primaryColor,
+                          padding: EdgeInsets.symmetric(
+                            vertical: 12,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
                         ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                        child: Text(
+                          "Save",
+                          style: TextStyle(color: AppColors.primarywhite),
                         ),
-                      ),
-                      child: Text(
-                        "Save",
-                        style: TextStyle(color: AppColors.primarywhite),
                       ),
                     ),
 
@@ -172,4 +215,33 @@ class _EditProfileState extends State<EditProfile> {
       ),
     );
   }
+
+  Widget buildInputField(String label, TextEditingController controller,
+      {TextInputType keyboardType = TextInputType.text, int maxLines = 1, String hint = ""}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+        SizedBox(height: 8),
+        TextField(
+          controller: controller,
+          keyboardType: keyboardType,
+          maxLines: maxLines,
+          decoration: InputDecoration(
+            hint: Text(hint),
+            filled: true,
+            fillColor: Colors.grey.shade100,
+            contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide(color: Colors.grey.shade400),
+            ),
+          ),
+        ),
+        SizedBox(height: 16),
+      ],
+    );
+  }
+
 }

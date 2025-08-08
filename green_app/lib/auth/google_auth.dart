@@ -96,6 +96,45 @@ class FirebaseService{
     }
   }
 
+  Future<Map<String, dynamic>?> getUserData() async {
+    try {
+      final user = auth.currentUser;
+      if (user != null) {
+        final snapshot = await _firestore.collection('users').doc(user.uid).get();
+        return snapshot.data();
+      }
+    } catch (e) {
+      print('Error fetching user data: $e');
+    }
+    return null;
+  }
+
+  Future<bool> updateUserData({
+    String? name,
+    String? phone,
+    String? email,
+    String? location,
+  }) async {
+    try {
+      final user = auth.currentUser;
+      if (user == null) return false;
+
+      final Map<String, dynamic> updatedData = {};
+
+      if (name != null && name.isNotEmpty) updatedData['name'] = name;
+      if (phone != null && phone.isNotEmpty) updatedData['phone'] = phone;
+      if (email != null && email.isNotEmpty) updatedData['email'] = email;
+      if (location != null && location.isNotEmpty) updatedData['location'] = location;
+
+      await _firestore.collection('users').doc(user.uid).update(updatedData);
+      return true;
+    } catch (e) {
+      print('Error updating user data: $e');
+      return false;
+    }
+  }
+
+
   Future<String> getUserRole() async {
     try {
       User? currentUser = auth.currentUser;
