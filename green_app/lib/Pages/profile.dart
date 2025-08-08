@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:green_app/Pages/edit_profile.dart';
 import 'package:green_app/Theme/colors.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:green_app/controller.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -13,88 +13,143 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
+    final media = MediaQuery.of(context);
+    final screenHeight = media.size.height;
+    final screenWidth = media.size.width;
+
     return Scaffold(
-      // Bagian atas dengan background hijau dan avatar
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: Image.asset('assets/header_profile.png')),
-          Positioned(
-            top: 40,
-            right: 16,
-            child: TextButton(onPressed: (){}, child: Text("Log Out", style: TextStyle(color: Colors.white, fontSize: 16))),
-          ),
-          Positioned.fill(
-            top: 160,
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircleAvatar(
-                    radius: 60,
-                    backgroundImage: AssetImage('assets/profile_img.png'), // ganti dengan image kamu
+      backgroundColor: AppColors.primarywhite,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: SizedBox(
+            height: screenHeight, // agar bisa scroll semua konten
+            child: Stack(
+              children: [
+                // Header Background
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: Image.asset(
+                    'assets/header_profile.png',
+                    width: screenWidth,
+                    height: screenHeight * 0.3,
+                    fit: BoxFit.cover,
                   ),
-                  SizedBox(height: 12),
-                  Text("Melissa peters",
-                      style:
-                      TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                  Text("Interior designer",
-                      style: TextStyle(color: Colors.grey.shade600)),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.location_on, size: 16, color: Colors.grey),
-                      SizedBox(width: 4),
-                      Text("Lagos, Nigeria",
-                          style: TextStyle(color: Colors.grey.shade600)),
-                    ],
-                  ),
-                  SizedBox(height: 12),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfile()));
+                ),
+
+                // Logout Button
+                Positioned(
+                  top: 32,
+                  right: 16,
+                  child: TextButton(
+                    onPressed: () async {
+                      await logout();
+                      Navigator.pushReplacementNamed(context, '/signin');
                     },
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12))),
-                    child: Text("Edit profile", style: TextStyle(color: AppColors.primarywhite),),
+                    child: Text(
+                      "Log Out",
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    ),
                   ),
-                  SizedBox(height: 24),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                ),
+
+                // Content
+                Positioned(
+                  top: screenHeight * 0.22,
+                  left: 0,
+                  right: 0,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        // Avatar
+                        CircleAvatar(
+                          radius: screenWidth * 0.15,
+                          backgroundImage: AssetImage('assets/profile_img.png'),
+                        ),
+                        SizedBox(height: 12),
+
+                        // Name, Role, Location
+                        Text(
+                          "Melissa peters",
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "Interior designer",
+                          style: TextStyle(color: Colors.grey.shade600),
+                        ),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Image.asset('assets/cp_icon.png', width: 24, height: 24),
+                            Icon(Icons.location_on, size: 16, color: Colors.grey),
                             SizedBox(width: 4),
-                            Text("Contact Us",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 16)),
+                            Text(
+                              "Lagos, Nigeria",
+                              style: TextStyle(color: Colors.grey.shade600),
+                            ),
                           ],
                         ),
                         SizedBox(height: 16),
+
+                        // Edit Profile Button
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => EditProfile()),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primaryColor,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 22,
+                              vertical: 12,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          child: Text(
+                            "Edit profile",
+                            style: TextStyle(color: AppColors.primarywhite),
+                          ),
+                        ),
+                        SizedBox(height: 24),
+
+                        // Contact Us Section
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Row(
+                            children: [
+                              Image.asset('assets/cp_icon.png', width: 24, height: 24),
+                              SizedBox(width: 4),
+                              Text(
+                                "Contact Us",
+                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 16),
+
+                        // Contact Tiles
                         contactTile('assets/wa_icon.png', "0898989898"),
                         contactTile('assets/gmail_icon.png', "sasdsd@gmail.com"),
                         contactTile('assets/tnc_icon.png', "Terms & Condition"),
                       ],
                     ),
-                  )
-                ],
-              ),
-            )
-          )
-        ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
-  }
+}
 
+  /// Contact Tile Component
   Widget contactTile(String img, String text) {
     return Container(
       margin: EdgeInsets.only(bottom: 12),
@@ -107,7 +162,12 @@ class _ProfilePageState extends State<ProfilePage> {
         children: [
           Image.asset(img, width: 24, height: 24),
           SizedBox(width: 12),
-          Expanded(child: Text(text)),
+          Expanded(
+            child: Text(
+              text,
+              style: TextStyle(fontSize: 14),
+            ),
+          ),
         ],
       ),
     );

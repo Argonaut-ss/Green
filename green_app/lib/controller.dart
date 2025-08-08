@@ -108,6 +108,10 @@ Future<String?> deleteAccountAndData() async {
   }
 }
 
+Future<void> logout() async {
+  await FirebaseAuth.instance.signOut();
+}
+
 class AddPesananAPI {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

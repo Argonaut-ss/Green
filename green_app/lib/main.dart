@@ -25,8 +25,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Green App',
-      home: Signin(),
+      home: user == null ? Signin() : CustomBottomNavBarPage(role: user.displayName ?? 'client'),
       routes: {
+        '/signin': (context) => Signin(),
         '/settings': (context) => SettingsPage(),
         '/profile': (context) => ProfilePage(),
         '/addPesanan': (context) => const AddPesanan(),

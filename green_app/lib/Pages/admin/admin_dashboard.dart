@@ -147,6 +147,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        backgroundColor: AppColors.primarywhite,
         body: ListView(
           children: [
             Container(
