@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:green_app/Pages/edit_profile.dart';
 import 'package:green_app/Theme/colors.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -18,7 +19,7 @@ class _ProfilePageState extends State<ProfilePage> {
         fit: StackFit.expand,
         children: [
           Positioned(
-            top: 0,
+              top: 0,
               left: 0,
               right: 0,
               child: Image.asset('assets/header_profile.png')),
@@ -54,7 +55,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   SizedBox(height: 12),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfile()));
+                    },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.green,
                         shape: RoundedRectangleBorder(
